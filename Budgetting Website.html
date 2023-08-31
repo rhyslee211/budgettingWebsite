@@ -1,58 +1,45 @@
 <!DOCTYPE html>
 <html>
  <head> 
-        <style>
-            div {
-                height: 50px;
-                width: 100%;
-                font-size: large;
-                color: black;
-            }
-            body{
-                background-color: blueviolet
-            }
-        </style>
-    </head>
-
-
+        <link rel = 'stylesheet' type = 'text/css' href = 'budgetWebsiteCSS.css'>
+        <script src = 'budgetWebsiteJS.js'></script>
+</head>
 
     <body id = 'pageBody'>
 
-    <div id = 'HelloText'>Say hello to the computer
-        <button onClick={sayHello()}>Default</button>;
-    </div>
-    <div id = 'SecondButton'>Say goodbye to the computer
-        <button onClick={sayBye()}>Second Button</button>;
-    </div>
-    <div>
+    <div id = 'header'>A Simple Budgetting Website</div>
 
-        <input id='inputText' oninput={copyText()}>Enter Text
 
+    <div id = 'mainBudgetForm'>
+        <div>
+            Enter Monthly Pay
+            <input id='monthlyPay'>
+
+        </div>
+        <div>
+            Add Monthly Debts <button id = 'addDebtsBtn' onclick = 'addDebt()'>+</button>
+        </div>
+        <div id = 'debtDiv'>
+            <ul id = 'debtInputDiv'>
+                <li><input class='debtNameInput' placeholder='Type of Debt'> <input class = 'debtAmtInput' placeholder='Debt Amount'></li>
+            </ul>
+        </div>
+
+        <div>
+            Add Monthly Expenses <button id = 'addDebtsBtn' onclick = 'addExpense()'>+</button>
+        </div>
+        <div id = 'expensesDiv'>
+            <ul id = 'expensesInputDiv'>
+                <li><input class='debtNameInput' placeholder='Type of Expense'> <input class = 'expenseAmtInput' placeholder='Expense Amount'></li>
+            </ul>
+        </div>
+        <div>
+            <button id = 'calculateBudget' onclick = 'calcBudget()'>Calculate</button>
+        </div>
+        <div id = 'displayBudget'>
+
+        </div>
     </div>
-    <div id = 'copiedText'>
-        I am going to copy what you say
-    </div>
-
-    <script>
-        function sayHello() {
-            const elem = document.getElementById('pageBody');
-            elem.style.color = 'white';
-            elem.style.backgroundColor = 'blue';
-            alert('Hello World');
-        }
-        function sayBye(){
-            const elem = document.getElementById('pageBody');
-            elem.style.color = 'black';
-            elem.style.backgroundColor = 'blueviolet';
-            alert('Goodbye World');
-        }
-        function copyText(){
-            const elem = document.getElementById('inputText')
-            const elem2 = document.getElementById('copiedText')
-
-            elem2.innerHTML = elem.value
-        }
-    </script>
 
     </body>
 </html>
