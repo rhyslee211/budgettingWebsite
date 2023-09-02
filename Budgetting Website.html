@@ -7,12 +7,12 @@
 
     <body id = 'pageBody'>
 
-    <div id = 'header'>A Simple Budgetting Website</div>
+    <div id = 'header'>The EZ Budget</div>
 
 
     <div id = 'mainBudgetForm'>
         <div>
-            Enter Monthly Pay
+            Enter Monthly Pay:
             <input id='monthlyPay'>
 
         </div>
@@ -21,7 +21,18 @@
         </div>
         <div id = 'debtDiv'>
             <ul id = 'debtInputList'>
-                <li><input class='debtNameInput' placeholder='Type of Debt' class = 'listInput'> <input type = 'number' class = 'debtAmtInput' placeholder='Debt Amount'></li>
+                <li>
+                    <select>
+                        <option value = ''>-----Type of Debt-----</option>
+                        <option value = 'Home'>Home</option>
+                        <option value = 'Auto'>Auto</option>
+                        <option value = 'Student Loans'>Student Loans</option>
+                        <option value = 'Credit Card'>Credit Card</option>
+                        <option value = 'Other'>Other</option>
+                    </select> 
+                    <input class='debtNameInput' placeholder='Type of Debt' class = 'listInput'> 
+                    <input type = 'number' class = 'debtAmtInput' placeholder='Debt Amount'>
+                </li>
             </ul>
         </div>
 
@@ -30,13 +41,28 @@
         </div>
         <div id = 'expensesDiv'>
             <ul id = 'expenseInputList'>
-                <li><input class='debtNameInput' placeholder='Type of Expense' class = 'listInput'> <input type = 'number' class = 'expenseAmtInput' placeholder='Expense Amount'></li>
+                <li>
+                    <select>
+                        <option value = ''>--Type of Expense--</option>
+                        <option value = 'Bills'>Bills</option>
+                        <option value = 'Groceries'>Groceries</option>
+                        <option value = 'Clothing'>Clothing</option>
+                        <option value = 'Transportation'>Transportation</option>
+                        <option value = 'Insurance'>Insurance</option>
+                        <option value = 'Savings'>Savings</option>
+                    </select> 
+                    <input class='debtNameInput' placeholder='Type of Expense' class = 'listInput'> 
+                    <input type = 'number' class = 'expenseAmtInput' placeholder='Expense Amount'>
+                </li>
             </ul>
         </div>
         <div>
             <button id = 'calculateBudget' onclick = 'calcBudget()'>Calculate</button>
         </div>
         <div id = 'displayBudget'>
+
+        </div>
+        <div id = 'displayBudgetPercentages'>
 
         </div>
     </div>
