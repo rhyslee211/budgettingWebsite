@@ -21,14 +21,15 @@
         </div>
         <div id = 'debtDiv'>
             <ul id = 'debtInputList'>
-                <li>
-                    <select>
-                        <option value = ''>-----Type of Debt-----</option>
+                <li class = 'debtInputRow'>
+                    <button onclick = 'deleteRow(this)'>-</button>
+                    <select class = 'debtSelectorInput'>
+                        <option value = 'default'>-----Type of Debt-----</option>
                         <option value = 'Home'>Home</option>
                         <option value = 'Auto'>Auto</option>
                         <option value = 'Student Loans'>Student Loans</option>
                         <option value = 'Credit Card'>Credit Card</option>
-                        <option value = 'Other'>Other</option>
+                        <option value = 'Other (Debts)'>Other</option>
                     </select> 
                     <input class='debtNameInput' placeholder='Type of Debt' class = 'listInput'> 
                     <input type = 'number' class = 'debtAmtInput' placeholder='Debt Amount'>
@@ -41,15 +42,17 @@
         </div>
         <div id = 'expensesDiv'>
             <ul id = 'expenseInputList'>
-                <li>
-                    <select>
-                        <option value = ''>--Type of Expense--</option>
+                <li class = 'expenseInputRow'>
+                    <button onclick = 'deleteRow(this)'>-</button>
+                    <select class = 'expenseSelectorInput'>
+                        <option value = 'default'>--Type of Expense--</option>
                         <option value = 'Bills'>Bills</option>
                         <option value = 'Groceries'>Groceries</option>
                         <option value = 'Clothing'>Clothing</option>
                         <option value = 'Transportation'>Transportation</option>
                         <option value = 'Insurance'>Insurance</option>
                         <option value = 'Savings'>Savings</option>
+                        <option value = 'Other (Expenses)'>Other</option>
                     </select> 
                     <input class='debtNameInput' placeholder='Type of Expense' class = 'listInput'> 
                     <input type = 'number' class = 'expenseAmtInput' placeholder='Expense Amount'>
@@ -60,9 +63,6 @@
             <button id = 'calculateBudget' onclick = 'calcBudget()'>Calculate</button>
         </div>
         <div id = 'displayBudget'>
-
-        </div>
-        <div id = 'displayBudgetPercentages'>
 
         </div>
     </div>

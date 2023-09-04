@@ -1,88 +1,121 @@
 function addDebt(){
 
     const  debtElem = document.createElement('li')
-    debtElem.innerHTML = "<select>\
-            <option value = ''>-----Type of Debt-----</option>\
+    debtElem.className = 'debtInputRow'
+    debtElem.innerHTML = "<button onclick = 'deleteRow(this)'>-</button> \
+        <select class = 'debtSelectorInput'>\
+            <option value = 'default'>-----Type of Debt-----</option>\
             <option value = 'Home'>Home</option>\
             <option value = 'Auto'>Auto</option>\
             <option value = 'Student Loans'>Student Loans</option>\
             <option value = 'Credit Card'>Credit Card</option>\
-            <option value = 'Other'>Other</option>\
-        </select> <input class='debtNameInput' placeholder='Type of Expense'> \
-        <input class = 'debtAmtInput' placeholder='Expense Amount'>"
+            <option value = 'Other (Debts)'>Other</option>\
+        </select> <input class='debtNameInput' placeholder='Type of Debt'> \
+        <input class = 'debtAmtInput' placeholder='Debt Amount'>";
 
-    document.getElementById('debtInputList').appendChild(debtElem)
+    document.getElementById('debtInputList').appendChild(debtElem);
 
 }
 
 function addExpense(){
 
     const  expenseElem = document.createElement('li')
-    expenseElem.innerHTML = "<select>\
-                <option value = ''>--Type of Expense--</option>\
-                <option value = 'Bills'>Bills</option>\
+    expenseElem.className = 'expenseInputRow'
+    expenseElem.innerHTML = "<button onclick = 'deleteRow(this)'>-</button> \
+            <select class = 'expenseSelectorInput'>\
+                <option value = 'default'>--Type of Expense--</option>\
+                <option value = 'Utilities'>Utilities</option>\
                 <option value = 'Groceries'>Groceries</option>\
                 <option value = 'Clothing'>Clothing</option>\
                 <option value = 'Transportation'>Transportation</option>\
                 <option value = 'Insurance'>Insurance</option>\
                 <option value = 'Savings'>Savings</option>\
+                <option value = 'Other (Expenses)'>Other</option>\
             </select> \
             <input class='expenseNameInput' placeholder='Type of Expense'> \
-            <input class = 'expenseAmtInput' placeholder='Expense Amount'>"
+            <input class = 'expenseAmtInput' placeholder='Expense Amount'>";
 
-    document.getElementById('expenseInputList').appendChild(expenseElem)
+    document.getElementById('expenseInputList').appendChild(expenseElem);
 
+}
+
+function deleteRow(elem){
+    elem.parentElement.remove()
 }
 
 function calcBudget(){
 
-    const debtCollection = document.getElementsByClassName('debtAmtInput');
+    var expenseAmtDict = {
+        'Home': 0,
+        'Auto': 0,
+        'Student Loans': 0,
+        'Credit Cards': 0,
+        'Other (Debts)': 0,
+        'Utilities': 0,
+        'Groceries': 0,
+        'Clothing': 0,
+        'Transportation': 0,
+        'Insurance': 0,
+        'Savings': 0,
+        'Other (Expenses)': 0
+    };
 
-    const expenseCollection = document.getElementsByClassName('expenseAmtInput')
+    
 
-    var incomeNum = parseFloat(document.getElementById('monthlyPay').value)
+    const debtCollection = document.getElementsByClassName('debtInputRow');
 
-    var budgetNum = incomeNum
+    const expenseCollection = document.getElementsByClassName('expenseInputRow');
 
-    //console.log(debtCollection)
-    //console.log(expenseCollection)
+    var incomeNum = parseFloat(document.getElementById('monthlyPay').value);
+
+    var budgetNum = incomeNum;
 
     if(isNaN(parseFloat(document.getElementById('monthlyPay').value))){
-        alert("Please enter your monthly pay")
-        return
+        alert("Please enter your monthly pay");
+        return;
     }
 
     for (let i = 0; i < debtCollection.length; i++){
+        const debtInput = debtCollection[i].querySelector('.debtAmtInput');
+        var debtType = debtCollection[i].querySelector('.debtSelectorInput').value;
 
-        if(!isNaN(parseFloat(debtCollection[i].value))){
 
-            //console.log(debtCollection[i].value)
-            budgetNum -= parseFloat(debtCollection[i].value)
+        if(debtType == 'default'){
+            debtType = 'Other (Debts)';
+        }
+
+        if(!isNaN(parseFloat(debtInput.value))){
+
+            expenseAmtDict[debtType] += parseFloat(debtInput.value);
+            budgetNum -= parseFloat(debtInput.value);
         }
     } 
 
     for (let i = 0; i < expenseCollection.length; i++){
+        const expenseInput = expenseCollection[i].querySelector('.expenseAmtInput');
+        var expenseType = expenseCollection[i].querySelector('.expenseSelectorInput').value;
 
-        if(!isNaN(parseFloat(expenseCollection[i].value))){
+        if(expenseType == 'default'){
+            expenseType = 'Other (Expenses)';
+        }
 
-            //console.log(expenseCollection[i].value)
-            budgetNum -= parseFloat(expenseCollection[i].value)
+        if(!isNaN(parseFloat(expenseInput.value))){
+
+            expenseAmtDict[expenseType] += parseFloat(expenseInput.value);
+            budgetNum -= parseFloat(expenseInput.value);
         }
     } 
 
-    console.log(budgetNum)
+    //console.log(budgetNum)
 
+    var budgetString = ''
 
-    if(budgetNum > 0){
-        document.getElementById('displayBudget').innerHTML = '<div>Your leftover money is: ' + budgetNum + '</div>'
-    }
-    else if(budgetNum == 0){
-        document.getElementById('displayBudget').innerHTML = '<div>Your budget is perfectly balanced.' + '</div>'
-    }
-    else{
-        document.getElementById('displayBudget').innerHTML = '<div>Your over your budget by ' + Math.abs(budgetNum) + '</div>'
+    for(var item in expenseAmtDict){
+        if(expenseAmtDict[item] > 0){
+        const expensePercent = (expenseAmtDict[item]/incomeNum).toFixed(3) * 100
+        budgetString += item + ': ' + expensePercent + '%<br>'
+        }
     }
 
-    
-
+    document.getElementById('displayBudget').innerHTML = budgetString
 }
