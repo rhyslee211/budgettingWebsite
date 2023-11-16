@@ -1,68 +1,95 @@
-function addDebt(){
+//import {Chart} from './node_modules/chart.js/auto/auto.cjs'
 
-    const  debtElem = document.createElement('li')
-    debtElem.className = 'debtInputRow'
-    debtElem.innerHTML = "<button onclick = 'deleteRow(this)'>-</button> \
-        <select class = 'debtSelectorInput'>\
-            <option value = 'default'>-----Type of Debt-----</option>\
-            <option value = 'Home'>Home</option>\
-            <option value = 'Auto'>Auto</option>\
-            <option value = 'Student Loans'>Student Loans</option>\
-            <option value = 'Credit Card'>Credit Card</option>\
-            <option value = 'Other (Debts)'>Other</option>\
-        </select> <input class='debtNameInput' placeholder='Type of Debt'> \
-        <input class = 'debtAmtInput' placeholder='Debt Amount'>";
+document.addEventListener('DOMContentLoaded', () => {
+    // Add Monthly Debts
 
-    document.getElementById('debtInputList').appendChild(debtElem);
+    // Add Monthly Expenses
+    const addExpenseBtn = document.getElementById('addExpenseBtn');
+    addExpenseBtn.addEventListener('click', addExpense);
 
-}
+    // Calculate Budget
+    const calculateBudgetBtn = document.getElementById('calculateBudget');
+    calculateBudgetBtn.addEventListener('click', calcBudget);
 
-function addExpense(){
 
-    const  expenseElem = document.createElement('li')
+    const initialDeleteBtn = document.getElementById('initialDeleteButton')
+    initialDeleteBtn.addEventListener('click',()=> deleteRow(initialDeleteBtn.parentElement))
+    // Add event listeners for delete buttons (if needed)
+    // ...
+
+    // Other code
+});
+
+let myChart = null
+
+export function addExpense(){
+
+    const expenseElem = document.createElement('li')
+    const deleteElemBtn = document.createElement('button')
     expenseElem.className = 'expenseInputRow'
-    expenseElem.innerHTML = "<button onclick = 'deleteRow(this)'>-</button> \
-            <select class = 'expenseSelectorInput'>\
-                <option value = 'default'>--Type of Expense--</option>\
-                <option value = 'Utilities'>Utilities</option>\
-                <option value = 'Groceries'>Groceries</option>\
-                <option value = 'Clothing'>Clothing</option>\
-                <option value = 'Transportation'>Transportation</option>\
-                <option value = 'Insurance'>Insurance</option>\
-                <option value = 'Savings'>Savings</option>\
-                <option value = 'Other (Expenses)'>Other</option>\
-            </select> \
-            <input class='expenseNameInput' placeholder='Type of Expense'> \
-            <input class = 'expenseAmtInput' placeholder='Expense Amount'>";
+    deleteElemBtn.addEventListener('click', ()=> deleteRow(expenseElem))
+    deleteElemBtn.innerText = '-'
+
+    expenseElem.appendChild(deleteElemBtn)
+    expenseElem.append(' ')
+
+    const selectElemBtn = document.createElement('select')
+    selectElemBtn.className = 'expenseSelectorInput'
+
+    selectElemBtn.innerHTML = "<option value = 'default'>--Type of Expense--</option>\
+<option value = 'Home'>Home</option>\
+<option value = 'Auto'>Auto</option>\
+<option value = 'Loans'>Loans</option>\
+<option value = 'Credit Cards'>Credit Cards</option>\
+<option value = 'Utilities'>Utilities</option>\
+<option value = 'Groceries'>Groceries</option>\
+<option value = 'Clothing'>Clothing</option>\
+<option value = 'Transportation'>Transportation</option>\
+<option value = 'Insurance'>Insurance</option>\
+<option value = 'Savings'>Savings</option>\
+<option value = 'Other'>Other</option>"
+
+    expenseElem.appendChild(selectElemBtn)
+    expenseElem.append(' ')
+
+    const inputElemBtn = document.createElement('input')
+    inputElemBtn.className = 'expenseNameInput'
+    inputElemBtn.placeholder = 'Type of Expense'
+
+    const inputAmtElemBtn = document.createElement('input')
+    inputAmtElemBtn.className = 'expenseAmtInput'
+    inputAmtElemBtn.placeholder = 'Expense Amount'
+
+    expenseElem.appendChild(inputElemBtn)
+    expenseElem.append(' ')
+    expenseElem.appendChild(inputAmtElemBtn)
+    expenseElem.append(' ')
 
     document.getElementById('expenseInputList').appendChild(expenseElem);
 
 }
 
-function deleteRow(elem){
-    elem.parentElement.remove()
+export function deleteRow(elem){
+    elem.remove()
 }
 
-function calcBudget(){
+export function calcBudget(){
 
     var expenseAmtDict = {
         'Home': 0,
         'Auto': 0,
-        'Student Loans': 0,
+        'Loans': 0,
         'Credit Cards': 0,
-        'Other (Debts)': 0,
         'Utilities': 0,
         'Groceries': 0,
         'Clothing': 0,
         'Transportation': 0,
         'Insurance': 0,
         'Savings': 0,
-        'Other (Expenses)': 0
+        'Other': 0,
+        'Surplus': 0
     };
 
-    
-
-    const debtCollection = document.getElementsByClassName('debtInputRow');
 
     const expenseCollection = document.getElementsByClassName('expenseInputRow');
 
@@ -75,28 +102,12 @@ function calcBudget(){
         return;
     }
 
-    for (let i = 0; i < debtCollection.length; i++){
-        const debtInput = debtCollection[i].querySelector('.debtAmtInput');
-        var debtType = debtCollection[i].querySelector('.debtSelectorInput').value;
-
-
-        if(debtType == 'default'){
-            debtType = 'Other (Debts)';
-        }
-
-        if(!isNaN(parseFloat(debtInput.value))){
-
-            expenseAmtDict[debtType] += parseFloat(debtInput.value);
-            budgetNum -= parseFloat(debtInput.value);
-        }
-    } 
-
     for (let i = 0; i < expenseCollection.length; i++){
         const expenseInput = expenseCollection[i].querySelector('.expenseAmtInput');
         var expenseType = expenseCollection[i].querySelector('.expenseSelectorInput').value;
 
         if(expenseType == 'default'){
-            expenseType = 'Other (Expenses)';
+            expenseType = 'Other';
         }
 
         if(!isNaN(parseFloat(expenseInput.value))){
@@ -106,16 +117,81 @@ function calcBudget(){
         }
     } 
 
+    expenseAmtDict['Surplus'] = budgetNum
+
     //console.log(budgetNum)
 
-    var budgetString = ''
+    //var budgetString = '<canvas id="budgetChart">'
+    var xValues = []
+    var yValues = []
 
     for(var item in expenseAmtDict){
         if(expenseAmtDict[item] > 0){
-        const expensePercent = (expenseAmtDict[item]/incomeNum).toFixed(3) * 100
-        budgetString += item + ': ' + expensePercent + '%<br>'
+            xValues.push(item)
+            yValues.push(expenseAmtDict[item])
         }
     }
 
-    document.getElementById('displayBudget').innerHTML = budgetString
+    //document.getElementById('displayBudget').innerHTML = budgetString
+
+    const dataVals = {
+        labels: xValues,
+        datasets: [{
+            label: 'Budget Data',
+            data: yValues,
+        backgroundColor: [
+            'rgb(255, 99, 132)',
+            'rgb(54, 162, 235)',
+            'rgb(255, 205, 86)',
+            'rgb(75, 192, 192)',
+            'rgb(153, 102, 255)',
+            'rgb(255, 159, 64)',
+            'rgb(128, 128, 0)',
+            'rgb(0, 128, 128)',
+            'rgb(128, 0, 128)',
+            'rgb(0, 255, 255)'
+            ],
+        hoverOffset: 4
+    }]
+    }
+
+    console.log(xValues)
+    console.log(yValues)
+    var chartElem = document.getElementById('budgetChartCanvas')
+    const config = {
+        type: 'doughnut',
+        data: dataVals}
+
+    if(myChart == null){
+        myChart = new Chart(
+            chartElem, config
+        )
+        myChart.update()
+    }
+    else{
+        removeData(myChart)
+        myChart.update()
+        addData(myChart, xValues,yValues)
+        myChart.update()
+    }
+
+    myChart.canvas.parentNode.style.height = '512px';
+    myChart.canvas.parentNode.style.width = '512px';
+
+}
+
+function removeData(chart){
+    chart.data.labels = [];
+    chart.data.datasets.forEach((dataset) => {
+        dataset.data = [];
+    });
+}
+
+function addData(chart, labels, newData){
+    labels.forEach((label, index) => {
+        chart.data.labels.push(label);
+        chart.data.datasets.forEach((dataset) => {
+            dataset.data.push(newData[index]);
+        });
+    });
 }

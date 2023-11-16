@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+ <head> 
+
+        <link rel="stylesheet" type="text/css" href="/budgetWebsiteCSS.8cfa7067.css">
+        <script src="c:/Users/RhysP/node_modules/chart.js"></script>
+        <script type="module">
+            import { addExpense, calcBudget, deleteRow } from './budgetWebsiteJS.js';
+        
+            // Other imports and code here
+        </script>
+<script src="/budgetWebsiteCSS.8cfa7067.js"></script></head>
+
+    <body id="pageBody">
+
+    <div id="header">The EZ Budget</div>
+
+
+    <div id="mainBudgetForm">
+        <div>
+            Enter Monthly Pay:
+            <input id="monthlyPay">
+
+        </div>
+        <div>
+            Add Monthly Expenses <button id="addExpenseBtn">+</button>
+        </div>
+        <div id="expensesDiv">
+            <ul id="expenseInputList">
+                <li class="expenseInputRow">
+                    <button id="initialDeleteButton">-</button>
+                    <select class="expenseSelectorInput">
+                        <option value="default">--Type of Expense--</option>
+                        <option value="Bills">Bills</option>
+                        <option value="Groceries">Groceries</option>
+                        <option value="Clothing">Clothing</option>
+                        <option value="Transportation">Transportation</option>
+                        <option value="Insurance">Insurance</option>
+                        <option value="Savings">Savings</option>
+                        <option value="Other (Expenses)">Other</option>
+                    </select> 
+                    <input class="debtNameInput" placeholder="Type of Expense"> 
+                    <input type="number" class="expenseAmtInput" placeholder="Expense Amount">
+                </li>
+            </ul>
+        </div>
+        <div>
+            <button id="calculateBudget">Calculate</button>
+            
+        </div>
+        <canvas id="budgetChartCanvas">
+            
+        </canvas>
+        
+    </div>
+
+    </body>
+</html>
