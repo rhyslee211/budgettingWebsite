@@ -4,6 +4,5 @@ This is my first time programming with HTML, CSS, and Javascript, so in order to
 
 Features I hope to add are:
 
-~~1. A doughnut chart detailing where the user spends their income.~~
-
+1. ~~A doughnut chart detailing where the user spends their income.~~
 2. Recommendations for users to help users budget.
